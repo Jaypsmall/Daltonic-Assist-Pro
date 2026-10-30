@@ -1,0 +1,33 @@
+name: Flutter CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # 1. Configurar el SDK de Flutter en lugar de Dart
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.x' # O puedes especificar una versión concreta como '3.19.0'
+          channel: 'stable'
+
+      # 2. Instalar dependencias usando flutter pub get
+      - name: Install dependencies
+        run: flutter pub get
+
+      # 3. Analizar el código fuente del proyecto
+      - name: Analyze project source
+        run: flutter analyze
+
+      # 4. Ejecutar las pruebas unitarias y de widgets con Flutter
+      - name: Run tests
+        run: flutter test
+
